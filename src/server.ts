@@ -38,7 +38,7 @@ app.get("/", (req, res) => {
     });
 
 
-
+main();
 
 //SIGTERM
 process.on('SIGTERM', () => {
