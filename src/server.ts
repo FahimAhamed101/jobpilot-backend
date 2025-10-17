@@ -45,10 +45,3 @@ main()
     process.exit(1);
   });
 
-//SIGTERM
-process.on('SIGTERM', () => {
-  logger.info('SIGTERM IS RECEIVE');
-  if (server) {
-    server.close();
-  }
-});
