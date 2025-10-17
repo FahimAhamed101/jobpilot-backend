@@ -7,11 +7,6 @@ import config from './config';
 import { errorLogger, logger } from './shared/logger';
 import { socketHelper } from './app/socket/socket';
 dotenv.config();
-//uncaught exception
-process.on('uncaughtException', error => {
-  errorLogger.error('Unhandled Exception Detected', error);
-  process.exit(1);
-});
 
 let server: any;
 async function main() {
@@ -29,31 +24,14 @@ async function main() {
     
 
     });
-    //socket
-    const io = new Server(server, {
-      pingTimeout: 60000,
-      cors: {
-        origin: '*',
-      },
-    });
-    socketHelper.socket(io);
-    // @ts-ignore
-    global.io = io;
+ 
+
+ 
   } catch (error) {
     errorLogger.error(colors.red('🤢 Failed to connect Database'));
   }
 
-  //handle unhandledRejection
-  process.on('unhandledRejection', error => {
-    if (server) {
-      server.close(() => {
-        errorLogger.error('UnhandledRejection Detected', error);
-        process.exit(1);
-      });
-    } else {
-      process.exit(1);
-    }
-  });
+ 
 }
 app.get("/", (req, res) => {
       res.send("Lebaba E-commerce Server is running....");
