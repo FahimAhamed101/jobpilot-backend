@@ -38,7 +38,12 @@ app.get("/", (req, res) => {
     });
 
 
-main();
+main()
+  .then(() => logger.info('✅ Application started successfully'))
+  .catch((error) => {
+    errorLogger.error('❌ Failed to start application', error);
+    process.exit(1);
+  });
 
 //SIGTERM
 process.on('SIGTERM', () => {
