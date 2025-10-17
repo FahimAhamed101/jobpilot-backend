@@ -2,10 +2,11 @@ import colors from 'colors';
 import mongoose from 'mongoose';
 import { Server } from 'socket.io';
 import app from './app';
+import dotenv from "dotenv";
 import config from './config';
 import { errorLogger, logger } from './shared/logger';
 import { socketHelper } from './app/socket/socket';
-
+dotenv.config();
 //uncaught exception
 process.on('uncaughtException', error => {
   errorLogger.error('Unhandled Exception Detected', error);
@@ -57,6 +58,8 @@ async function main() {
 app.get("/", (req, res) => {
       res.send("Lebaba E-commerce Server is running....");
     });
+
+
 main();
 
 //SIGTERM
