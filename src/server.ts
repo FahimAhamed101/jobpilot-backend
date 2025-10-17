@@ -9,54 +9,38 @@ import { socketHelper } from './app/socket/socket';
 dotenv.config();
 
 let server: any;
-
 async function main() {
   try {
-    await mongoose.connect(config.mongoose.url as string);
+    mongoose.connect(config.mongoose.url as string);
     logger.info(colors.green('🚀 Database connected successfully'));
-    
-    const port = process.env.PORT || config.port || 3000;
-    const backendIp = process.env.VERCEL ? '0.0.0.0' : config.backendIp;
-    
-    server = app.listen(port, backendIp as string, () => {
+    const port =
+      typeof config.port === 'number' ? config.port : Number(config.port);
+    server = app.listen(port, config.backendIp as string, () => {
       logger.info(
         colors.yellow(
-          `♻️  Application listening on port ${port}`
+          `♻️  Application listening on port http://${config.backendIp}:${port}/test`
         )
       );
+    
+
     });
+ 
 
-    // Socket.io - only if not in Vercel production
-    if (!process.env.VERCEL) {
-      const io = new Server(server, {
-        pingTimeout: 60000,
-        cors: {
-          origin: '*',
-        },
-      });
-      socketHelper.socket(io);
-      // @ts-ignore
-      global.io = io;
-    }
-
+ 
   } catch (error) {
     errorLogger.error(colors.red('🤢 Failed to connect Database'));
   }
-}
 
+ 
+}
 app.get("/", (req, res) => {
-  res.send("Lebaba E-commerce Server is running....");
-});
+      res.send("Lebaba E-commerce Server is running....");
+    });
 
-// Export for Vercel
-export default app;
 
-// Only run main() if not in Vercel environment
-if (!process.env.VERCEL) {
-  main();
-}
+main();
 
-// SIGTERM
+//SIGTERM
 process.on('SIGTERM', () => {
   logger.info('SIGTERM IS RECEIVE');
   if (server) {
