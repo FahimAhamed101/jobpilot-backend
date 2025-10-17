@@ -54,7 +54,9 @@ async function main() {
     }
   });
 }
-
+app.get("/", (req, res) => {
+      res.send("Lebaba E-commerce Server is running....");
+    });
 main();
 
 //SIGTERM
